@@ -34,8 +34,18 @@ while($row = $result->fetch_assoc())
             <div class='card-content'>
               
               <h4 class='card-title mb-4'><a class='text-white' href='articles.php?id=$row[cat_id]&page=1'>$row[cat_name]</a></h4>
-              <a class='btn btn-outline-light' href='articles.php?id=$row[cat_id]&page=1'>read more</a>
-            </div>
+              <a class='btn btn-outline-light' href='articles.php?id=$row[cat_id]&page=1'>read more</a>";
+			  if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true)
+			  {
+				  
+			  }
+              else
+			  {				  
+			   echo"<br>
+			        <a href='Categoryaddons/editcategory.php?id=$row[cat_id]' class='btn btn-outline-warning float-left'>Edit</a>
+		            <a href='Categoryaddons/deletecategory.php?id=$row[cat_id]' class='btn btn-outline-danger float-right'>Delete</a>";
+              } 
+	 echo"      </div>
           </div>
         </article>
       </div>";
@@ -56,7 +66,7 @@ while($row = $result->fetch_assoc())
 	$limit = 6;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $start = ($page - 1) * $limit;
-$sql = "SELECT * FROM articles LIMIT $start,$limit";
+$sql = "SELECT * FROM articles ORDER BY article_create DESC LIMIT $start,$limit";
 $result = $db->query($sql);
 
 if($result->num_rows == 0)
@@ -69,12 +79,65 @@ while($row = $result->fetch_assoc())
   echo"
       <div class='col-lg-4 col-sm-6 mb-5'>
         <article class='text-center'>
-          <img class='img-fluid mb-4' src='Profilepics/Articles/$row[article_unique_key]/$row[article_image]' alt='post-thumb'>
-          <p class='text-uppercase mb-2'>TRAVEL</p>
-          <h4 class='title-border'><a class='text-dark' href='content.php?id=$row[article_id]'>$row[article_name]</a></h4>
-          <p>$row[article_summary]</p>
-          <a href='content.php?id=$row[article_id]' class='btn btn-transparent'>read more</a>
-        </article>
+          <img class='img-fluid mb-4' src='Profilepics/Articles/$row[article_unique_key]/$row[article_image]' alt='post-thumb'>";
+       
+	   if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true)
+  {
+	echo"";
+  }
+  else
+  {    echo "<div class='row'>";
+	  echo"<div class='col-lg-4'>
+	       <a href='Articleaddons/editarticle.php?id=$row[article_id]' class='float-right'>Edit</a>
+	       
+		   </div>";
+		  if($row['article_block'] == 0)
+		  {
+		   echo"<div class='col-lg-4'>
+		       <a href='Articleaddons/blockarticle.php?id=$row[article_id]' class='float-right'>Block</a>
+		       </div>
+			   ";
+		  }
+		  else
+		  {
+			  echo"<div class='col-lg-4'>
+			      <a href='Articleaddons/blockarticle.php?id=$row[article_id]' class='float-right'>Unblock</a>
+		       <br><br>
+			   </div>";
+		  }
+	  echo"<div class='col-lg-4'>
+	      <a href='Articleaddons/deletearticle.php?id=$row[article_id]' class='float-right'>Delete</a>
+		   </div>";
+	  echo "</div>
+	        <br>";
+  }
+		 
+		  
+		  
+	echo"	  
+          <h4 class='title-border'>";
+		  if($row['article_block'] == 0)
+         {
+		  echo "<a class='text-dark' href='content.php?id=$row[article_id]'>$row[article_name]</a>";
+		  
+		 }
+		 else
+		 {
+			 echo "<a class='text-dark' href='#' onclick='Blockalert()'>$row[article_name]</a>";
+		 }
+		 echo"
+		  </h4>
+          <p>$row[article_summary]</p>";
+		  if($row['article_block'] == 0)
+		  {
+          echo "<a href='content.php?id=$row[article_id]' class='btn btn-transparent'>read more</a>";
+		  }
+		  else
+		  {
+			  echo "<a href='#' class='btn btn-transparent' onclick='Blockalert()'>read more</a>";
+		  }
+    
+	echo" </article>
       </div>
 	  ";
 }
@@ -88,7 +151,7 @@ while($row = $result->fetch_assoc())
         <nav>
 		<?php
 		
-		  $page_query = "SELECT * FROM articles";
+		  $page_query = "SELECT * FROM articles ORDER BY article_create DESC";
                 $page_result = $db->query($page_query);
                 $total_records = mysqli_num_rows($page_result);
                 $total_pages = ceil($total_records/$limit);
@@ -133,65 +196,9 @@ while($row = $result->fetch_assoc())
   </div>
 </section>
 <!-- /instagram -->
-
-<footer class="bg-secondary">
-  <div class="section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <a href="index.html"><img src="images/logo.png" alt="persa" class="img-fluid"></a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <h6>Address</h6>
-          <ul class="list-unstyled">
-            <li class="font-secondary text-dark">Sydney</li>
-            <li class="font-secondary text-dark">6 rip carl Avenue CA 90733</li>
-          </ul>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <h6>Contact Info</h6>
-          <ul class="list-unstyled">
-            <li class="font-secondary text-dark">Tel: +90 000 333 22</li>
-            <li class="font-secondary text-dark">Mail: exmaple@ymail.com</li>
-          </ul>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <h6>Follow</h6>
-          <ul class="list-inline d-inline-block">
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-facebook"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-twitter-alt"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-linkedin"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="text-center pb-3">
-    <p class="mb-0">Copyright ©<script>var CurrentYear = new Date().getFullYear()
-    document.write(CurrentYear)</script> a theme by  <a href="https://themefisher.com/">themefisher.com</a></p>
-  </div>
-</footer>
-
-<!-- jQuery -->
-<script src="plugins/jQuery/jquery.min.js"></script>
-<!-- Bootstrap JS -->
-<script src="plugins/bootstrap/bootstrap.min.js"></script>
-<!-- slick slider -->
-<script src="plugins/slick/slick.min.js"></script>
-<!-- masonry -->
-<script src="plugins/masonry/masonry.js"></script>
-<!-- instafeed -->
-<script src="plugins/instafeed/instafeed.min.js"></script>
-<!-- smooth scroll -->
-<script src="plugins/smooth-scroll/smooth-scroll.js"></script>
-<!-- headroom -->
-<script src="plugins/headroom/headroom.js"></script>
-<!-- reading time -->
-<script src="plugins/reading-time/readingTime.min.js"></script>
-
-<!-- Main Script -->
-<script src="js/script.js"></script>
-
-</body>
-</html>
+<script>
+function Blockalert(){
+	alert('This article has been blocked by an admin');
+}
+</script>
+<?php include 'footer.php'; ?>

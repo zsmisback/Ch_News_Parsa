@@ -51,9 +51,15 @@ if($result->num_rows == 0)
 }
 while($row = $result->fetch_assoc())
 {
+	if($row['article_block'] == 1)
+	{
+		header("Location:index.php?page=1");
+	}
+	else
+	{
    echo"   <div class='col-lg-8'>
         <ul class='list-inline d-flex justify-content-between py-3'>
-          <li class='list-inline-item'><i class='ti-user mr-2'></i>Post by Jhon Abraham</li>
+          <li class='list-inline-item'><i class='ti-user mr-2'></i>Post by $row[article_creator]</li>
           <li class='list-inline-item'><i class='ti-calendar mr-2'></i>$row[article_create]</li>
         </ul>
         <img src='Profilepics/Articles/$row[article_unique_key]/$row[article_image]' alt='post-thumb' class='w-100 img-fluid mb-4'>
@@ -96,6 +102,17 @@ while($row = $result->fetch_assoc())
 			   {
 		        echo "<h6>By: $row4[comment_by]</h6>";
 		       }
+			   if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true)
+           {
+	        echo"";
+           }
+            else
+           {
+	        echo"<a href='Commentaddons/editcomment.php?id=$row4[comment_id]' class='float-right'>Edit</a>
+			     <br><br>
+			     <a href='Commentaddons/deletecomment.php?id=$row4[comment_id]' class='float-right'>Delete</a>";
+           }
+			   
          echo "<p>$row4[comment_summary]</p><hr>";
 	  }	
   }	  
@@ -122,10 +139,19 @@ while($row = $result->fetch_assoc())
             </div>
             <div class='media-body'>
               <ul class='list-inline d-flex justify-content-between mb-2'>
-                <li class='list-inline-item'>Post By Jhon</li>
-                <li class='list-inline-item'>$row[article_create]</li>
+                <li class='list-inline-item'>Post By $row3[article_creator]</li>
+                <li class='list-inline-item'>$row3[article_create]</li>
               </ul>
-              <h6><a class='text-dark' href='content.php?id=$row3[article_id]'>$row3[article_name]</a></h6>
+              <h6>";
+			  if($row3['article_block'] == 0)
+			  {
+			   echo"<a class='text-dark' href='content.php?id=$row3[article_id]'>$row3[article_name]</a>";
+			  }
+			  else
+			  {
+				  echo"<a class='text-dark' href='#' onclick='Blockalert()'>$row3[article_name]</a>";
+			  }
+		echo" </h6>
             </div>
           </div>";
   }
@@ -133,83 +159,74 @@ while($row = $result->fetch_assoc())
         echo"  
         </div>
         <div class='widget'>
-          <h6 class='mb-4'>TAG</h6>
-          <ul class='list-inline tag-list'>
-            <li class='list-inline-item m-1'><a href='blog-single.html'>ui ux</a></li>
-          </ul>
+          <h6 class='mb-4'>TAGS</h6>
+          <ul class='list-inline tag-list'>";
+		  
+		  $keys = explode(",",$row['article_key']);
+		  foreach($keys as $key)
+		  {
+		       echo "<li class='list-inline-item m-1'><a href='#'>$key</a></li>";
+		  }
+            
+        echo"  </ul>
         </div>
-        <div class='widget'>
-          <h6 class='mb-4'>CATEGORIES</h6>
-          <ul class='list-inline tag-list'>
-            <li class='list-inline-item m-1'><a href='blog-single.html'>ui ux</a></li>
-          </ul>
-        </div>
-      </div>";
+        ";
     }
+}
 ?>
     </div>
   </div>
 </section>
 <!-- /blog single -->
+<script>
+$(document).ready(function(){
+  $('#comments').submit(function(event){
+		event.preventDefault();
+		var cdesc = $('#cdesc').val();
+		var cbtn = $('#cbtn').val();
+      
+		$.ajax({
+			url:'Commentaddons/commenthandle.php?id=<?php echo $_GET['id']; ?>',
+			method:'POST',
+			data:{cdesc:cdesc,
+				  cbtn:cbtn},
+				  
+				  beforeSend:function(){
+			
+			$('input').prop('disabled',true);
+			$('button').prop('disabled',true);
+			
+			$('#error').html("<span class='spinner-border text-info'></span>");
+			$('#cbtn').html("<span id='forpasspn' class='spinner-grow spinner-grow-sm'></span> Processing");
+		},
 
-<footer class="bg-secondary">
-  <div class="section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <a href="index.html"><img src="images/logo.png" alt="persa" class="img-fluid"></a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <h6>Address</h6>
-          <ul class="list-unstyled">
-            <li class="font-secondary text-dark">Sydney</li>
-            <li class="font-secondary text-dark">6 rip carl Avenue CA 90733</li>
-          </ul>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <h6>Contact Info</h6>
-          <ul class="list-unstyled">
-            <li class="font-secondary text-dark">Tel: +90 000 333 22</li>
-            <li class="font-secondary text-dark">Mail: exmaple@ymail.com</li>
-          </ul>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
-          <h6>Follow</h6>
-          <ul class="list-inline d-inline-block">
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-facebook"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-twitter-alt"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-linkedin"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="text-dark"><i class="ti-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="text-center pb-3">
-    <p class="mb-0">Copyright ©<script>var CurrentYear = new Date().getFullYear()
-    document.write(CurrentYear)</script> a theme by  <a href="https://themefisher.com/">themefisher.com</a></p>
-  </div>
-</footer>
+        complete:function(){
+			$('input').prop('disabled',false);
+			$('button').prop('disabled',false);
+			
+			$('#cbtn').html("Submit");
+			
+		},
+		
+		success:function(data){
+				$('#error').html(data);
+				
+		},
 
-<!-- jQuery -->
-<script src="plugins/jQuery/jquery.min.js"></script>
-<!-- Bootstrap JS -->
-<script src="plugins/bootstrap/bootstrap.min.js"></script>
-<!-- slick slider -->
-<script src="plugins/slick/slick.min.js"></script>
-<!-- masonry -->
-<script src="plugins/masonry/masonry.js"></script>
-<!-- instafeed -->
-<script src="plugins/instafeed/instafeed.min.js"></script>
-<!-- smooth scroll -->
-<script src="plugins/smooth-scroll/smooth-scroll.js"></script>
-<!-- headroom -->
-<script src="plugins/headroom/headroom.js"></script>
-<!-- reading time -->
-<script src="plugins/reading-time/readingTime.min.js"></script>
-
-<!-- Main Script -->
-<script src="js/script.js"></script>
-
-</body>
-</html>
+        error:function(){
+			$('#error').html('Failed to process data');
+		}		
+			
+		})
+		
+		
+		
+	});  
+  
+  
+});
+function Blockalert(){
+	alert('This article has been blocked by an admin');
+}
+</script>
+<?php include 'footer.php'; ?>

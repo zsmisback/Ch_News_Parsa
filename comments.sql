@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2020 at 05:07 PM
+-- Generation Time: Jun 21, 2020 at 12:06 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -41,11 +41,11 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`comment_id`, `comment_summary`, `comment_article`, `comment_create`, `comment_by`) VALUES
-(20, 'ds', 33, '2020-06-16 16:12:49', ''),
-(21, 'dss', 33, '2020-06-16 16:12:56', ''),
-(22, 'dsds', 33, '2020-06-16 16:14:47', ''),
+(21, 'Hey', 33, '2020-06-21 02:04:13', ''),
+(22, 'he', 33, '2020-06-21 02:04:32', ''),
 (23, 'hey', 33, '2020-06-16 16:39:38', ''),
-(24, 'test', 33, '2020-06-16 23:43:47', '');
+(24, 'test', 33, '2020-06-16 23:43:47', ''),
+(26, 'Test123', 33, '2020-06-21 02:10:49', 'resheil');
 
 --
 -- Indexes for dumped tables
@@ -66,7 +66,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Constraints for dumped tables

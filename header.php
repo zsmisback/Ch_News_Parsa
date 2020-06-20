@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Champion News</title>
+  <title>Champion News:India's Best Source for Blogs,News and Interviews related to sports</title>
 
   <!-- mobile responsive meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +12,7 @@
   <!-- ** Plugins Needed for the Project ** -->
   <!-- Bootstrap -->
   <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- slick slider -->
   <link rel="stylesheet" href="plugins/slick/slick.css">
   <!-- themefy-icon -->
@@ -50,30 +51,70 @@
       aria-controls="navogation" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse text-center" id="navogation">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link text-uppercase text-dark" href="index.php?page=1">
+   
+  
+   <div class='collapse navbar-collapse text-center' id='navogation'>
+      <ul class='navbar-nav ml-auto'>
+        <li class='nav-item dropdown'>
+          <a class='nav-link text-uppercase text-dark' href='index.php?page=1'>
             Home
-          </a>
-          
+          </a>  
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-uppercase text-dark" href="about.html">About</a>
+		<?php
+		 if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true)
+      {	  
+        echo"
+        <li class='nav-item'>
+          <a class='nav-link text-uppercase text-dark' href='about.php'>About</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-uppercase text-dark" href="category.html">Categories</a>
+        <li class='nav-item'>
+          <a class='nav-link text-uppercase text-dark' href='contact.php'>Contact</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-uppercase text-dark" href="contact.html">Contact</a>
-        </li>
-      </ul>
-      <form class="form-inline position-relative ml-lg-4">
-        <input class="form-control px-0 w-100" type="search" placeholder="Search">
-        <!-- <button class="search-icon" type="submit"><i class="ti-search text-dark"></i></button> -->
-        <a href="search.html" class="search-icon"><i class="ti-search text-dark"></i></a>
+      </ul>";
+	  }
+	  else
+	  {
+		  echo"<li class='nav-item'>
+<div class='dropdown'>
+<a class='nav-link dropdown-toggle text-uppercase text-dark' data-toggle='dropdown' href='#'>Category</a>
+<div class='dropdown-menu'>
+      <a class='dropdown-item' href='Categoryaddons/catadd.php'>Add category</a>
+      <a class='dropdown-item' href='Categoryaddons/categorylist.php'>List categories</a>
+    </div>
+</div>
+</li>
+ <li class='nav-item'>
+ <div class='dropdown'>
+  <a class='nav-link dropdown-toggle text-uppercase text-dark' data-toggle='dropdown' href='#'>Articles</a>
+  <div class='dropdown-menu'>
+      <a class='dropdown-item' href='Articleaddons/articleadd.php'>Add articles</a>
+      <a class='dropdown-item' href='Articleaddons/articlelist.php'>List articles</a>
+	  
+      
+    </div>
+ </div>
+ </li>
+ <li class='nav-item'>
+ <div class='dropdown'>
+  <a class='nav-link dropdown-toggle text-uppercase text-dark' data-toggle='dropdown' href='#'>Comments</a>
+  <div class='dropdown-menu'>
+      <a class='dropdown-item' href='Commentaddons/commentadd.php'>Add comment</a>
+      <a class='dropdown-item' href='Commentaddons/commentlist.php'>List comments</a>
+    </div>
+	</div>
+ </li>
+ <li class='nav-item'>
+  <a class='nav-link text-uppercase text-dark' href='logout.php'>Logout</a>
+ </li>";
+	  }
+	  ?>
+      <form class='form-inline position-relative ml-lg-4'>
+        <input class='form-control px-0 w-100' type='search' placeholder='Search'>
+        <!-- <button class='search-icon' type='submit'><i class='ti-search text-dark'></i></button> -->
+        <a href='search.html' class='search-icon'><i class='ti-search text-dark'></i></a>
       </form>
     </div>
+  
+	
   </nav>
 </header>
